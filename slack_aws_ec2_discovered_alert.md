@@ -10,17 +10,17 @@
 		b. Search App Directory > type "Incoming Webhooks" > Add to Slack
 		c. Post to channel > choose appropriate channel > click add webhooks integration
 		d. note  "Post to channel", "webhook url", and "customize name"
-    e. Save Settings
-  4. Create Lambda function
+                e. Save Settings
+        4. Create Lambda function
 		a. Lambda > Create Function > Author from Scratch
 		b. Give Function a name
 		c. Runtime = Python 3.6
 		d. Create function
-    e. Paste the following in the lambda_function.py (but update url, channel and username)
-    ```
-    #!/usr/bin/python3.6
-		import urllib3
-		import json
+                e. Paste the following in the lambda_function.py (but update url, channel and username)
+                ```
+                #!/usr/bin/python3.6
+                import urllib3
+	        import json
 		http = urllib3.PoolManager()
 		def lambda_handler(event, context):
 		    url = "SLACK_WEBHOOK_URL"
@@ -37,15 +37,15 @@
 		        "message": event['Records'][0]['Sns']['Message'], 
 		        "status_code": resp.status, 
 		        "response": resp.data
-    })
-    ```
-  5. add trigger > SNS > Select lambda created above > Add
+               })
+               ```
+        5. add trigger > SNS > Select lambda created above > Add
 	6. Create EventBridge rule
 		a. EventBridge > Rules > Create rule
 		b. Give it a name
 		c. "Rule with an event Pattern" > Next
 		d. Event Source : AWS events or EventBridge partner events
-    e. Event Pattern > Custom Patters (JSON editor)  ***may need to tweak formatting a bit
+                e. Event Pattern > Custom Patters (JSON editor)  ***may need to tweak formatting a bit
     ```
     {
 		  "source": ["aws.config"],
