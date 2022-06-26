@@ -20,28 +20,28 @@
 	d. Create function
         e. Paste the following in the lambda_function.py (but update url, channel and username)
 
-                ```
-                #!/usr/bin/python3.6
-                import urllib3
-	        import json
-		http = urllib3.PoolManager()
-		def lambda_handler(event, context):
-		    url = "SLACK_WEBHOOK_URL"
-		    msg = {
-		        "channel": "#CHANNEL",
-		        "username": "WEBHOOK_USERNAME",
-		        "text": event['Records'][0]['Sns']['Message'],
-		        "icon_emoji": ""
-		    }
-		    
-		    encoded_msg = json.dumps(msg).encode('utf-8')
-		    resp = http.request('POST',url, body=encoded_msg)
-		    print({
-		        "message": event['Records'][0]['Sns']['Message'], 
-		        "status_code": resp.status, 
-		        "response": resp.data
-                 })
-                 ```
+        ```
+        #!/usr/bin/python3.6
+        import urllib3
+        import json
+
+	http = urllib3.PoolManager()
+	def lambda_handler(event, context):
+	    url = "SLACK_WEBHOOK_URL"
+	    msg = {
+	        "channel": "#CHANNEL",
+	        "username": "WEBHOOK_USERNAME",
+	        "text": event['Records'][0]['Sns']['Message'],
+	        "icon_emoji": ""
+	    } 
+	    encoded_msg = json.dumps(msg).encode('utf-8')
+	    resp = http.request('POST',url, body=encoded_msg)
+	    print({
+	        "message": event['Records'][0]['Sns']['Message'], 
+	        "status_code": resp.status, 
+	        "response": resp.data
+                })
+        ```
 5. add trigger > SNS > Select lambda created above > Add
 6. Create EventBridge rule
 	a. EventBridge > Rules > Create rule
