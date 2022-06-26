@@ -1,24 +1,24 @@
 ## Send alert to Slack on EC2 instance creation
 
-        1. Make sure AWS Config is recording
-		a. AWS Config > Settings
-		b. Recording = on
-		c. General Settings > Resource types to record: EC2 Instance
-	2. Create SNS Topic
-		a. SNS > Topics > Create Topic
-		b. Standard > Create a name > tag as necessary > Create topic
-	3. Create Slack App/Webhook
-		a. Settings & Administration > Workplace Settings > Configure Apps
-		b. Search App Directory > type "Incoming Webhooks" > Add to Slack
-		c. Post to channel > choose appropriate channel > click add webhooks integration
-		d. note  "Post to channel", "webhook url", and "customize name"
-                e. Save Settings
-        4. Create Lambda function
-		a. Lambda > Create Function > Author from Scratch
-		b. Give Function a name
-		c. Runtime = Python 3.6
-		d. Create function
-                e. Paste the following in the lambda_function.py (but update url, channel and username)
+1. Make sure AWS Config is recording
+	a. AWS Config > Settings
+	b. Recording = on
+	c. General Settings > Resource types to record: EC2 Instance
+2. Create SNS Topic
+	a. SNS > Topics > Create Topic
+	b. Standard > Create a name > tag as necessary > Create topic
+3. Create Slack App/Webhook
+	a. Settings & Administration > Workplace Settings > Configure Apps
+	b. Search App Directory > type "Incoming Webhooks" > Add to Slack
+	c. Post to channel > choose appropriate channel > click add webhooks integration
+	d. note  "Post to channel", "webhook url", and "customize name"
+        e. Save Settings
+4. Create Lambda function
+	a. Lambda > Create Function > Author from Scratch
+	b. Give Function a name
+	c. Runtime = Python 3.6
+	d. Create function
+        e. Paste the following in the lambda_function.py (but update url, channel and username)
 
                 ```
                 #!/usr/bin/python3.6
@@ -42,14 +42,14 @@
 		        "response": resp.data
                  })
                  ```
+5. add trigger > SNS > Select lambda created above > Add
+6. Create EventBridge rule
+	a. EventBridge > Rules > Create rule
+	b. Give it a name
+	c. "Rule with an event Pattern" > Next
+	d. Event Source : AWS events or EventBridge partner events
+        e. Event Pattern > Custom Patters (JSON editor)  ***may need to tweak formatting a bit
 
-        5. add trigger > SNS > Select lambda created above > Add
-	6. Create EventBridge rule
-		a. EventBridge > Rules > Create rule
-		b. Give it a name
-		c. "Rule with an event Pattern" > Next
-		d. Event Source : AWS events or EventBridge partner events
-                e. Event Pattern > Custom Patters (JSON editor)  ***may need to tweak formatting a bit
                 ```
                 {
 		  "source": ["aws.config"],
@@ -77,9 +77,9 @@
 			}
 		```
 
-		j. template
-		i. "On <configurationItemCaptureTime> AWS Config service recorded a creation of a new <resource_type> with Id <resource_ID> in the account <awsAccountId> region <awsRegion>. For more details open the AWS Config console at https://console.aws.amazon.com/config/home?region=<awsRegion>#/timeline/<resource_type>/<resource_ID>/configuration"
-		k. Confirm
+	j. template
+	i. "On <configurationItemCaptureTime> AWS Config service recorded a creation of a new <resource_type> with Id <resource_ID> in the account <awsAccountId> region <awsRegion>. For more details open the AWS Config console at https://console.aws.amazon.com/config/home?region=<awsRegion>#/timeline/<resource_type>/<resource_ID>/configuration"
+	k. Confirm
 
 References:
 https://aws.amazon.com/premiumsupport/knowledge-center/config-email-resource-created/
