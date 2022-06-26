@@ -1,4 +1,6 @@
-	1. Make sure AWS Config is recording
+## Send alert to Slack on EC2 instance creation
+
+        1. Make sure AWS Config is recording
 		a. AWS Config > Settings
 		b. Recording = on
 		c. General Settings > Resource types to record: EC2 Instance
